@@ -1,10 +1,6 @@
 # pratique
 
-pratique 
-
-/prah-teak/
-
-_noun_
+pratique /prah-teak/, _noun_
 
 definiton: permission granted to a ship to have dealings with a port, given after quarantine or on showing a clean bill of health.
 
