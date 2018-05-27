@@ -1,6 +1,11 @@
 # pratique
 
-pratique (prah-teak), noun
+pratique 
+
+/prah-teak/
+
+_noun_
+
 definiton: permission granted to a ship to have dealings with a port, given after quarantine or on showing a clean bill of health.
 
 ---
@@ -30,7 +35,7 @@ WIP
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/JessicaGreben/pratique/)CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/JessicaGreben/pratique/blob/master/CONTRIBUTING.md)for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -43,5 +48,3 @@ See the list of [contributors](https://github.com/JessicaGreben/pratique/graphs/
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
