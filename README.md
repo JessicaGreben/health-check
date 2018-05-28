@@ -10,15 +10,43 @@ Pratique is a service can be launched that reports the overall health of a clust
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### CLI Prerequisites
 
-### Prerequisites
+* Golang installed
 
-WIP
+* Your $PATH configured:
+
+```
+$ export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+```
+
+### Download and run
+
+In order to use the command line, compile it using the following command:
+
+```
+$ go get github.com/jessicagreben/pratique
+```
+
+Build and install the program:
+
+```
+go install github.com/jessicagreben/pratique
+```
+
+`pratique` commands:
+
+To view details and available commands:
+
+```
+$ pratique help
+```
 
 ## Running the tests
 
-WIP
+```
+go test
+```
 
 ## Deployment
 
@@ -27,7 +55,7 @@ WIP
 ## Built With
 
 * [Cobra](https://github.com/spf13/cobra) - A Commander for modern Go CLI interactions
-* [Kubernetes Client-go](https://github.com/kubernetes/client-go) - Go client for Kubernetes.
+* [Kubernetes client-go](https://github.com/kubernetes/client-go) - Go client for Kubernetes.
 
 ## Contributing
 
