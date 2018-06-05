@@ -34,7 +34,7 @@ Build and install the program:
 go install github.com/jessicagreben/pratique
 ```
 
-`pratique` commands:
+### `pratique` commands:
 
 To view details and available commands:
 
@@ -71,4 +71,4 @@ See the list of [contributors](https://github.com/JessicaGreben/pratique/graphs/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
