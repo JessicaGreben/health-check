@@ -44,8 +44,23 @@ $ pratique help
 
 ## Running the tests
 
+To run tests in root package:
+
 ```
 go test
+```
+
+To run tests in sub-packages:
+
+```
+go test -v ./...
+
+```
+
+To test with code coverage:
+
+```
+go test -cover
 ```
 
 ## Deployment
