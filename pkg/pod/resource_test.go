@@ -1,4 +1,4 @@
-package cmd
+package pod
 
 import (
 	"testing"
@@ -30,8 +30,8 @@ func TestPodsResourceCheck(t *testing.T) {
 	var emptyReport = PodReport{}
 
 	for _, c := range cases {
-		report := podsResourceCheck(c.pods)
-		if len(report.limits) != 0 {
+		report := PodsResourceCheck(c.pods)
+		if len(report.Limits) != 0 {
 			t.Errorf("No pods: expected %v but returned %v", emptyReport, report)
 		}
 	}
