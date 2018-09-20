@@ -35,5 +35,5 @@ var clientset = createClientset()
 // CoreV1API exports the CoreV1 API client.
 var CoreV1API = clientset.CoreV1()
 
-// AutoscalingAPI exports the AutoscalingAPI client.
-var AutoscalingAPI = clientset.AutoscalingV2beta1()
+// AutoscalingV2beta1API exports the AutoscalingAPI client.
+var AutoscalingV2beta1API = clientset.AutoscalingV2beta1()

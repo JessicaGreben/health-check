@@ -1,12 +1,8 @@
-# pratique
-
-pratique /prah-teak/, _noun_
-
-definiton: permission granted to a ship to have dealings with a port, given after quarantine or on showing a clean bill of health.
+# health-check
 
 ---
 
-Pratique is a service can be launched that reports the overall health of a cluster.
+health-check is a service can be launched that reports the overall health of a cluster.
 
 ## Getting Started
 
@@ -25,21 +21,21 @@ $ export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 In order to use the command line, compile it using the following command:
 
 ```
-$ go get github.com/jessicagreben/pratique
+$ go get github.com/jessicagreben/health-check
 ```
 
 Build and install the program:
 
 ```
-go install github.com/jessicagreben/pratique
+go install github.com/jessicagreben/health-check
 ```
 
-### `pratique` commands:
+### `health-check` commands:
 
 To view details and available commands:
 
 ```
-$ pratique help
+$ health-check help
 ```
 
 ## Running the tests
@@ -74,15 +70,15 @@ WIP
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/JessicaGreben/pratique/blob/master/CONTRIBUTING.md)for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md)for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases for this repository](https://github.com/JessicaGreben/pratique/releases). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases for this repository](https://github.com/JessicaGreben/health-check/releases). 
 
 ## Authors
 
-See the list of [contributors](https://github.com/JessicaGreben/pratique/graphs/contributors) who have participated in this project.
+See the list of [contributors](https://github.com/JessicaGreben/health-check/graphs/contributors) who have participated in this project.
 
 ## License
 
