@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+health-check
 
 # Test binary, build with `go test -c`
 *.test
@@ -15,3 +16,6 @@
 
 # Goland IDE
 .idea
+
+# the health check report
+report.html

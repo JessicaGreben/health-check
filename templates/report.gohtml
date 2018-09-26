@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>health-check</title>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="container-fluid">
+<h1>health-check results</h1>
+<hr>
+{{range .Pods}}
+  <div>
+    <p><strong>Running check on Pod</strong> {{.Name}} in <strong>Namespace</strong> {{.Namespace}}.</p>
+    <ul>
+      <li>
+        <strong>Naked Pod Check</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replicasets-deployments-and-jobs">Reference</a>): 
+        {{if .Naked }} FAILED. <br> 
+          Decription: Don’t use naked Pods (i.e. Pods not bound to a ReplicaSet or Deployment) if you can avoid it. Naked Pods will not be rescheduled in the event of a node failure.
+        {{else}}
+          Passed.
+        {{end}}
+      </li>
+      <br>
+      <li>
+        <strong>HPA Check</strong> (<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">Reference</a>): 
+        {{if .HPA }} 
+          FAILED. <br>
+          Decription: Horizontal Pod Autoscaler automatically scales the number of pods in a replication controller, deployment or replica set based on observed CPU utilization or other specified metric.
+        {{else}} 
+          Passed.
+        {{end}}
+      </li>
+    </ul>
+    <p>This pod has {{len .Containers}} container/s:</p>
+    <ul>
+    {{range .Containers}}
+      <li>Container: {{.Name}}</li>
+      <ul>
+        <li>
+          <strong>Resource Request Check</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/">Reference</a>): 
+          {{if .Requests }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: When Kubernetes schedules a Pod, it’s important that the containers have enough resources, like CPU and memory, to run. 
+            Use resource requests to indicate what the container needs. Requests are what the container is guaranteed to get.
+          {{end}}
+        </li>
+        
+        <br>
+        
+        <li>
+          <strong>Resource Limit Check</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/">Reference</a>): 
+          {{if .Limits }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: When Kubernetes schedules a Pod, it’s important that the containers have enough resources, like CPU and memory, to run. 
+            Limits make sure a container never goes above a certain value. The container is only allowed to go up to the limit, and then it is restricted
+          {{end}}
+        </li>
+
+        <br>
+
+        <li>
+          <strong>Liveness Probe Check</strong> (<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">Reference</a>): 
+          {{if .Live }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: The kubelet uses liveness probes to know when to restart a Container. Many applications running for long periods of time eventually transition to broken states, and cannot recover except by being restarted.
+          {{end}}
+        </li>
+
+        <br>
+
+        <li>
+          <strong>Readiness Probe Check</strong> (<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">Reference</a>): 
+          {{if .Ready }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: Sometimes applications are temporarily unable to serve traffic. The kubelet uses readiness probes to know when a Container is ready to start accepting traffic. 
+          {{end}}
+        </li>
+      </ul>
+    {{end}}
+    </ul>
+  </div>
+  <hr>
+{{end}}
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</html>
