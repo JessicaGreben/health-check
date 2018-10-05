@@ -35,14 +35,14 @@ func getKubeConfig() string {
 		kPath = filepath.Join(home, ".kube", "config")
 	} else {
 		fmt.Println("kubeconfig not found.  Please ensure ~/.kube/config exists or KUBECONFIG is set.")
-		os.exit(1)
+		os.Exit(1)
 	}
 
 	if _, err := os.Stat(kPath); err != nil {
 		//kubeconfig doesn't exist
-		fmt.Prinf("%s doesn't exist - do you have a kubeconfig configured?\n", kPath)
-		os.exit(1)
-	}
+		fmt.Printf("%s doesn't exist - do you have a kubeconfig configured?\n", kPath)
+		os.Exit(1)
+  }
 	return kPath
 }
 
