@@ -7,11 +7,11 @@
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
-
 <body>
 <div class="container-fluid">
 <h1>health-check results</h1>
 <hr>
+
 {{range .Pods}}
   <div>
     <p><strong>Running check on Pod</strong> {{.Name}} in <strong>Namespace</strong> {{.Namespace}}.</p>
@@ -35,9 +35,16 @@
         {{end}}
       </li>
     </ul>
-    <p>This pod has {{len .Containers}} container/s:</p>
-    <ul>
+  </div>
+  <hr>
+{{end}}
+
+{{range .Deploys}}
+  <div>
+    <p><strong>Running check on Deployment</strong> {{.Name}} in <strong>Namespace</strong> {{.Namespace}}.</p>
+    <p>The pod for this deployment has {{len .Containers}} container/s:</p>
     {{range .Containers}}
+    <ul>
       <li>Container: {{.Name}}</li>
       <ul>
         <li>
@@ -60,7 +67,8 @@
           {{else}}
             FAILED.<br>
             Decription: When Kubernetes schedules a Pod, it’s important that the containers have enough resources, like CPU and memory, to run. 
-            Limits make sure a container never goes above a certain value. The container is only allowed to go up to the limit, and then it is restricted
+            Limits make sure a container never goes above a certain value. The container is only allowed to go up to the limit, and then it is restricted.
+            It is recommended that the CPU limit is not > 1Gb.  It's better to increase the replica count to keep the limit less.
           {{end}}
         </li>
 
@@ -88,11 +96,12 @@
           {{end}}
         </li>
       </ul>
-    {{end}}
     </ul>
+    {{end}}
   </div>
   <hr>
 {{end}}
+
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -25,3 +25,6 @@ func Render(report types.Results) error {
 	}
 	return nil
 }
+
+// Open opens a file in the browser.
+func Open(path string) {}
