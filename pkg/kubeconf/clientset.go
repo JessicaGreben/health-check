@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -29,9 +30,16 @@ func createClientset() *kubernetes.Clientset {
 // get a valid kubeconfig path
 func getKubeConfig() string {
 	var kPath string
+
+	//testing
+	test, err := homedir.Dir()
+	if err != nil {
+		fmt.Printf("homedir is set to %s", test)
+	}
+
 	if os.Getenv("KUBECONFIG") != "" {
 		kPath = os.Getenv("KUBECONFIG")
-	} else if home := os.Getenv("HOME"); home != "" {
+	} else if home, err := homedir.Dir(); err == nil {
 		kPath = filepath.Join(home, ".kube", "config")
 	} else {
 		fmt.Println("kubeconfig not found.  Please ensure ~/.kube/config exists or KUBECONFIG is set.")
@@ -42,7 +50,7 @@ func getKubeConfig() string {
 		//kubeconfig doesn't exist
 		fmt.Printf("%s doesn't exist - do you have a kubeconfig configured?\n", kPath)
 		os.Exit(1)
-  }
+	}
 	return kPath
 }
 
