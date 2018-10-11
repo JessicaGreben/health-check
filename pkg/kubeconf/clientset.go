@@ -31,12 +31,6 @@ func createClientset() *kubernetes.Clientset {
 func getKubeConfig() string {
 	var kPath string
 
-	//testing
-	test, err := homedir.Dir()
-	if err != nil {
-		fmt.Printf("homedir is set to %s", test)
-	}
-
 	if os.Getenv("KUBECONFIG") != "" {
 		kPath = os.Getenv("KUBECONFIG")
 	} else if home, err := homedir.Dir(); err == nil {
