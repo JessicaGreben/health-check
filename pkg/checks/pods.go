@@ -1,7 +1,9 @@
 package checks
 
 import (
-	"github.com/jessicagreben/health-check/pkg/kubeconf"
+	//"github.com/jessicagreben/health-check/pkg/kubeconf"
+	"../kubeconf"
+
 	"github.com/jessicagreben/health-check/pkg/types"
 
 	"k8s.io/api/core/v1"
@@ -97,4 +99,9 @@ func HPAs(podName string, namespace string) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+// Labels checks for best practice labels are configured for a pod.
+func labels(container v1.Container) (bool, bool) {
+
 }
