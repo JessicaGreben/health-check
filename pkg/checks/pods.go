@@ -1,11 +1,11 @@
 package checks
 
 import (
-	//"github.com/jessicagreben/health-check/pkg/kubeconf"
-	"../kubeconf"
+	"bytes"
+	"fmt"
 
+	"github.com/jessicagreben/health-check/pkg/kubeconf"
 	"github.com/jessicagreben/health-check/pkg/types"
-
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -102,6 +102,19 @@ func HPAs(podName string, namespace string) (bool, error) {
 }
 
 // Labels checks for best practice labels are configured for a pod.
-func labels(container v1.Container) (bool, bool) {
+func labels(pod v1.Pod) (bool, string) {
+	labels := pod.GetObjectMeta().GetLabels()
 
+	violation := false
+	var msg bytes.Buffer
+	var lblExists bool
+
+	for _, lbl := range [1]string{"app"} {
+		_, lblExists = labels[lbl]
+		if !lblExists {
+			msg.WriteString(fmt.Sprintf("Label '%s' does not exist", lbl))
+			violation = true
+		}
+	}
+	return violation, msg.String()
 }
