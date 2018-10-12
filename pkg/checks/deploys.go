@@ -15,10 +15,6 @@ func labels(deployment appsv1.Deployment) (bool, string) {
 
 	collLabels := map[string]map[string]string{"deployment": deployment.GetObjectMeta().GetLabels(), "pod": deployment.Spec.Template.GetLabels()}
 
-	//map[string]string
-	deployLabels := deployment.GetObjectMeta().GetLabels()
-	podLabels := deployment.Spec.Template.GetLabels()
-
 	for _, lbl := range [1]string{"app"} {
 		for lblFrom := range collLabels {
 			_, lblExists = collLabels[lblFrom][lbl]
