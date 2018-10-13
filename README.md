@@ -8,7 +8,7 @@ health-check is a service can be launched that reports the overall health of a c
 
 ### CLI Prerequisites
 
-* Golang installed
+* Golang >= v1.11 [installed](https://golang.org/dl/)
 
 * Your $PATH configured:
 
