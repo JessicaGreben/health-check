@@ -10,8 +10,8 @@ var Version = "v0.1.0"
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print pratique version",
-	Run: getVersion,
+	Short: "Print health-check version",
+	Run:   getVersion,
 }
 
 func getVersion(cmd *cobra.Command, args []string) {

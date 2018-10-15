@@ -12,7 +12,7 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:   "pratique",
+	Use:   "health-check",
 	Short: "Reports on the overall health of a kubernetes cluster.",
 	Long:  `Runs checks and reports on the overall health of a kubernetes cluster.`,
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -28,7 +28,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pratiquetest.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/health-check/health-check.yaml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -43,7 +43,9 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".pratiquetest")
+		viper.SetConfigName("health-check")
+		viper.AddConfigPath("$HOME/.config/health-check")
+		viper.AddConfigPath("$HOME")
 	}
 
 	viper.AutomaticEnv()
