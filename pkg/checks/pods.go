@@ -59,13 +59,3 @@ func HPAs(podName string, namespace string) (bool, error) {
 	}
 	return true, nil
 }
-
-// TODO: return a list of HPAs that exist for each pod.
-// for _, item := range hpas.Items {
-// 	name := item.GetObjectMeta().GetName()
-// 	fmt.Print("- ", name, "\n")
-// }
-
-// PDB view shows how much "can" be disrupted - so if `ALLOWED DISRUPTIONS < 1`
-// then a deadlock will definitely occur on upgrades
-func pdbCheck() {}

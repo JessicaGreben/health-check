@@ -31,6 +31,7 @@ func Render(report types.Results) error {
 }
 
 // open opens a file in the browser.
+// FIXME: currently only supports OSX.
 func open(path string) {
 	if err := exec.Command("/usr/bin/open", path).Run(); err != nil {
 		fmt.Printf("report.Open err: %x\n", err.Error())
