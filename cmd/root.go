@@ -12,10 +12,9 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:   "pratique",
+	Use:   "health-check",
 	Short: "Reports on the overall health of a kubernetes cluster.",
 	Long:  `Runs checks and reports on the overall health of a kubernetes cluster.`,
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 func Execute() {

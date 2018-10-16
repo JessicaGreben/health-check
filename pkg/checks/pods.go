@@ -1,7 +1,7 @@
 package checks
 
 import (
-	"github.com/jessicagreben/health-check/pkg/kubeconf"
+	"github.com/jessicagreben/health-check/pkg/kube"
 	"github.com/jessicagreben/health-check/pkg/types"
 
 	"k8s.io/api/core/v1"
@@ -9,10 +9,10 @@ import (
 )
 
 // Pods executes all the health checks for all pods.
-func Pods() (types.Results, error) {
-	var results types.Results
+func Pods() ([]types.PodResults, error) {
+	var results []types.PodResults
 
-	pods, err := kubeconf.CoreV1API.Pods("").List(metav1.ListOptions{})
+	pods, err := kube.CoreV1API.Pods("").List(metav1.ListOptions{})
 	if err != nil {
 		return results, err
 	}
@@ -30,20 +30,7 @@ func Pods() (types.Results, error) {
 			Naked:     naked(pod),
 		}
 
-		for _, container := range pod.Spec.Containers {
-			req, limits := resources(container)
-			live, ready := probes(container)
-
-			ctrResults := types.ContainerResults{
-				Name:     container.Name,
-				Requests: req,
-				Limits:   limits,
-				Live:     live,
-				Ready:    ready,
-			}
-			podResults.Containers = append(podResults.Containers, ctrResults)
-		}
-		results.Pods = append(results.Pods, podResults)
+		results = append(results, podResults)
 	}
 
 	return results, nil
@@ -51,8 +38,6 @@ func Pods() (types.Results, error) {
 
 // naked checks if there are any naked pods (i.e. pods without a
 // replicaset).
-// Naked pods should be avoided since they will not be rescheduled in the
-// event of failure
 func naked(pod v1.Pod) bool {
 	podmeta := pod.GetObjectMeta()
 	ref := podmeta.GetOwnerReferences()
@@ -62,33 +47,9 @@ func naked(pod v1.Pod) bool {
 	return false
 }
 
-// resources checks if there are resource requests and resource limits set.
-func resources(container v1.Container) (bool, bool) {
-	req, limits := true, true
-	if len(container.Resources.Requests) == 0 {
-		req = false
-	}
-	if len(container.Resources.Limits) == 0 {
-		limits = false
-	}
-	return req, limits
-}
-
-// probes checks if there are liveness and readiness probes set.
-func probes(container v1.Container) (bool, bool) {
-	live, ready := true, true
-	if container.LivenessProbe == nil {
-		live = false
-	}
-	if container.ReadinessProbe == nil {
-		ready = false
-	}
-	return live, ready
-}
-
 // HPAs checks if there are HPAs configured for a pod.
 func HPAs(podName string, namespace string) (bool, error) {
-	autoscaleAPI := kubeconf.AutoscalingV2beta1API
+	autoscaleAPI := kube.AutoscalingV1API
 	hpas, err := autoscaleAPI.HorizontalPodAutoscalers(namespace).List(metav1.ListOptions{})
 	if err != nil {
 		return false, err
@@ -98,3 +59,13 @@ func HPAs(podName string, namespace string) (bool, error) {
 	}
 	return true, nil
 }
+
+// TODO: return a list of HPAs that exist for each pod.
+// for _, item := range hpas.Items {
+// 	name := item.GetObjectMeta().GetName()
+// 	fmt.Print("- ", name, "\n")
+// }
+
+// PDB view shows how much "can" be disrupted - so if `ALLOWED DISRUPTIONS < 1`
+// then a deadlock will definitely occur on upgrades
+func pdbCheck() {}

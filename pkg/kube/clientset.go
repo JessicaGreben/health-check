@@ -1,4 +1,4 @@
-package kubeconf
+package kube
 
 import (
 	"fmt"
@@ -50,8 +50,18 @@ func getKubeConfig() string {
 
 var clientset = createClientset()
 
-// CoreV1API exports the CoreV1 API client.
-var CoreV1API = clientset.CoreV1()
+// Kubernetes version 1.10 APIs
 
 // AutoscalingV2beta1API exports the AutoscalingAPI client.
 var AutoscalingV2beta1API = clientset.AutoscalingV2beta1()
+
+// Kubernetes version 1.11 APIs
+
+// CoreV1API exports the v1 Core API client.
+var CoreV1API = clientset.CoreV1()
+
+// AutoscalingV1API exports the v1 Autoscaling API client.
+var AutoscalingV1API = clientset.AutoscalingV1()
+
+// AppsV1API exports the v1 Apps API client.
+var AppsV1API = clientset.AppsV1()
