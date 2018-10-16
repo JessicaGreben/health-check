@@ -8,7 +8,7 @@ health-check is a service can be launched that reports the overall health of a c
 
 ### CLI Prerequisites
 
-* Golang installed
+* Golang >= v1.11 [installed](https://golang.org/dl/)
 
 * Your $PATH configured:
 
@@ -24,11 +24,25 @@ In order to use the command line, compile it using the following command:
 $ go get github.com/jessicagreben/health-check
 ```
 
-Build and install the program:
+Enable Go [Modules](https://github.com/golang/go/wiki/Modules):
 
 ```
-go install github.com/jessicagreben/health-check
+$ export GO111MODULE=on
 ```
+
+Build the program with Go modules:
+
+```
+go build github.com/jessicagreben/health-check
+```
+
+or build the program with [vendor directory](https://github.com/golang/go/wiki/Modules#how-do-i-use-vendoring-with-modules-is-vendoring-going-away):
+
+
+```
+go build -mod=vendor github.com/jessicagreben/health-check
+```
+
 
 ### `health-check` commands:
 
