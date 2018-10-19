@@ -2,16 +2,23 @@ package types
 
 // Results contains the results of all the health checks.
 type Results struct {
-	Pods []PodResults
+	Deploys []DeployResults
+	Pods    []PodResults
+}
+
+// DeployResults has the results of the health checks for deploy.
+type DeployResults struct {
+	Name       string
+	Namespace  string
+	Containers []ContainerResults
 }
 
 // PodResults has the results of the health checks for pods.
 type PodResults struct {
-	Name       string
-	Namespace  string
-	HPA        bool
-	Naked      bool
-	Containers []ContainerResults
+	Name      string
+	Namespace string
+	HPA       bool
+	Naked     bool
 }
 
 // ContainerResults has the results of the health checks for containers.
