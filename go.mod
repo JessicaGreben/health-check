@@ -24,6 +24,6 @@ require (
 	google.golang.org/appengine v1.2.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/api v0.0.0-20181013054003-e94254e9898f
-	k8s.io/apimachinery v0.0.0-20181013010248-dcb88206cd7f
+	k8s.io/apimachinery v0.0.0-20181015213631-60666be32c5d
 	k8s.io/client-go v9.0.0+incompatible
 )
