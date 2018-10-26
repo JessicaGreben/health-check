@@ -1,14 +1,9 @@
 package checks
 
 import (
-<<<<<<< HEAD
-	"github.com/jessicagreben/health-check/pkg/kubeconf"
-=======
 	"github.com/jessicagreben/health-check/pkg/kube"
 	"github.com/jessicagreben/health-check/pkg/types"
->>>>>>> origin/master
 
-	"github.com/jessicagreben/health-check/pkg/types"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
