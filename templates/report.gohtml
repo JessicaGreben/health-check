@@ -95,6 +95,21 @@
             Decription: Sometimes applications are temporarily unable to serve traffic. The kubelet uses readiness probes to know when a Container is ready to start accepting traffic. 
           {{end}}
         </li>
+
+        <br>
+
+        <li>
+          <strong>HostPort Check</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/">Reference</a>): 
+          {{if not .HostPorts }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: Host ports should not be used unless absolutely necessary.  When you bind a pod to a hostPort, it limits the number of places the pod can be scheduled. 
+          {{end}}
+        </li>
+
+
+
       </ul>
     </ul>
     {{end}}

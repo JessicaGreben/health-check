@@ -23,9 +23,10 @@ type PodResults struct {
 
 // ContainerResults has the results of the health checks for containers.
 type ContainerResults struct {
-	Name     string
-	Requests bool
-	Limits   bool
-	Live     bool
-	Ready    bool
+	Name      string
+	Requests  bool
+	Limits    bool
+	Live      bool
+	Ready     bool
+	HostPorts bool
 }
