@@ -30,6 +30,7 @@ type ContainerResults struct {
 	Live      bool
 	Ready     bool
 	HostPorts bool
+	Tag       bool
 }
 
 type BaseResults struct {

@@ -3,6 +3,7 @@ package checks
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/jessicagreben/health-check/pkg/kube"
 	"github.com/jessicagreben/health-check/pkg/types"
@@ -32,6 +33,7 @@ func Deploys() ([]types.DeployResults, error) {
 			req, limits := resources(container)
 			live, ready := probes(container)
 			hostPorts, _ := hostPorts(container)
+			tag := containerTagCheck(container)
 
 			ctnResults := types.ContainerResults{
 				Name:      container.Name,
@@ -40,6 +42,7 @@ func Deploys() ([]types.DeployResults, error) {
 				Live:      live,
 				Ready:     ready,
 				HostPorts: hostPorts,
+				Tag:       tag.Passed,
 			}
 			deployResults.Containers = append(deployResults.Containers, ctnResults)
 		}
@@ -88,7 +91,18 @@ func hostPorts(container v1.Container) (bool, string) {
 }
 
 // avoid using "latest" for a tag for image
-func containerTagCheck() {}
+func containerTagCheck(container v1.Container) types.BaseResults {
+	img := strings.Split(container.Image, ":")
+	results := types.BaseResults{
+		Passed: true,
+	}
+
+	if img[1] != "latest" {
+		results.Passed = false
+		results.ErrMsg = fmt.Sprintf("Container %s image tag is %s", container.Image, img[1])
+	}
+	return results
+}
 
 // TODO: add check that cpu limit is not > 1Gb
 func resourceCPULimit() {}

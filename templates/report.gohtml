@@ -119,6 +119,17 @@
           {{end}}
         </li>
 
+        <br>
+
+        <li>
+          <strong>Latest Image Tag</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/">Reference</a>):
+          {{if .Tag}}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Description: You should avoid using the :latest tag when deploying containers as it is harder to track which version of the image is running and more difficult to roll back properly.
+          {{end}}
+        </li>
 
 
       </ul>
