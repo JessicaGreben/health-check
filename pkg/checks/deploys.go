@@ -21,9 +21,11 @@ func Deploys() ([]types.DeployResults, error) {
 	}
 
 	for _, deploy := range deploys.Items {
+
 		deployResults := types.DeployResults{
 			Name:      deploy.Name,
 			Namespace: deploy.Namespace,
+			Labels:    labels(deploy),
 		}
 
 		for _, container := range deploy.Spec.Template.Spec.Containers {
@@ -92,27 +94,25 @@ func containerTagCheck() {}
 func resourceCPULimit() {}
 
 // check best practice labels are defined on a deployment and pods.
-func labels(deployment appsv1.Deployment) (bool, string) {
-	//violation := false
-	//var msg bytes.Buffer
-	//var lblExists bool
+func labels(deployment appsv1.Deployment) types.BaseResults {
+	results := types.BaseResults{
+		Passed: true,
+	}
+	var msg bytes.Buffer
+	var lblExists bool
 
-	//test := deployment.Spec.Template.GetLabels()
-	//test2 := deployment.GetObjectMeta().GetLabels()
-
-	/*
-		collLabels := map[string]map[string]string{"deployment": deployment.GetObjectMeta().GetLabels(), "pod": deployment.Spec.Template.GetLabels()}
-		for _, lbl := range [1]string{"app"} {
-			for lblFrom := range collLabels {
-				_, lblExists = collLabels[lblFrom][lbl]
-				if !lblExists {
-					msg.WriteString(fmt.Sprintf("%s label '%s' does not exist\n", lblFrom, lbl))
-					violation = true
-				}
+	collLabels := map[string]map[string]string{"deployment": deployment.GetObjectMeta().GetLabels(), "pod": deployment.Spec.Template.GetLabels()}
+	for _, lbl := range [1]string{"app"} {
+		for lblFrom := range collLabels {
+			_, lblExists = collLabels[lblFrom][lbl]
+			if !lblExists {
+				msg.WriteString(fmt.Sprintf("%s label '%s' does not exist\n", lblFrom, lbl))
+				results.Passed = false
 			}
 		}
-		return violation, msg.String()*/
-	return false, "foo"
+	}
+	results.ErrMsg = msg.String()
+	return results
 }
 
 // check for any pods in deployment spec using hostPort

@@ -10,6 +10,7 @@ type Results struct {
 type DeployResults struct {
 	Name       string
 	Namespace  string
+	Labels     BaseResults
 	Containers []ContainerResults
 }
 
@@ -29,4 +30,9 @@ type ContainerResults struct {
 	Live      bool
 	Ready     bool
 	HostPorts bool
+}
+
+type BaseResults struct {
+	Passed bool
+	ErrMsg string
 }
