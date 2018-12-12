@@ -42,6 +42,17 @@
 {{range .Deploys}}
   <div>
     <p><strong>Running check on Deployment</strong> {{.Name}} in <strong>Namespace</strong> {{.Namespace}}.</p>
+    <ul>
+      <li>
+        <strong>Best Practice Labels</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/">Reference</a>):
+        {{if not .Labels.Passed}} FAILED. <br>
+          Description: Define and use labels that identify semantic attributes of your application.  The use of the labels "app" are highly recommended.
+        {{else}}
+          Passed.
+        {{end}}
+      </li>
+    </ul>
+
     <p>The pod for this deployment has {{len .Containers}} container/s:</p>
     {{range .Containers}}
     <ul>
@@ -95,6 +106,32 @@
             Decription: Sometimes applications are temporarily unable to serve traffic. The kubelet uses readiness probes to know when a Container is ready to start accepting traffic. 
           {{end}}
         </li>
+
+        <br>
+
+        <li>
+          <strong>HostPort Check</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/">Reference</a>): 
+          {{if not .HostPorts }}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Decription: Host ports should not be used unless absolutely necessary.  When you bind a pod to a hostPort, it limits the number of places the pod can be scheduled. 
+          {{end}}
+        </li>
+
+        <br>
+
+        <li>
+          <strong>Latest Image Tag</strong> (<a href="https://kubernetes.io/docs/concepts/configuration/overview/">Reference</a>):
+          {{if .Tag}}
+            Passed.
+          {{else}}
+            FAILED.<br>
+            Description: You should avoid using the :latest tag when deploying containers as it is harder to track which version of the image is running and more difficult to roll back properly.
+          {{end}}
+        </li>
+
+
       </ul>
     </ul>
     {{end}}

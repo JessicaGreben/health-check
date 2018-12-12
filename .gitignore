@@ -19,3 +19,7 @@ health-check
 
 # the health check report
 report.html
+
+
+# go modules
+go.sum

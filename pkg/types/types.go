@@ -10,6 +10,7 @@ type Results struct {
 type DeployResults struct {
 	Name       string
 	Namespace  string
+	Labels     BaseResults
 	Containers []ContainerResults
 }
 
@@ -23,9 +24,16 @@ type PodResults struct {
 
 // ContainerResults has the results of the health checks for containers.
 type ContainerResults struct {
-	Name     string
-	Requests bool
-	Limits   bool
-	Live     bool
-	Ready    bool
+	Name      string
+	Requests  bool
+	Limits    bool
+	Live      bool
+	Ready     bool
+	HostPorts bool
+	Tag       bool
+}
+
+type BaseResults struct {
+	Passed bool
+	ErrMsg string
 }

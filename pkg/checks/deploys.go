@@ -1,8 +1,13 @@
 package checks
 
 import (
+	"bytes"
+	"fmt"
+	"strings"
+
 	"github.com/jessicagreben/health-check/pkg/kube"
 	"github.com/jessicagreben/health-check/pkg/types"
+	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -17,21 +22,27 @@ func Deploys() ([]types.DeployResults, error) {
 	}
 
 	for _, deploy := range deploys.Items {
+
 		deployResults := types.DeployResults{
 			Name:      deploy.Name,
 			Namespace: deploy.Namespace,
+			Labels:    labels(deploy),
 		}
 
 		for _, container := range deploy.Spec.Template.Spec.Containers {
 			req, limits := resources(container)
 			live, ready := probes(container)
+			hostPorts, _ := hostPorts(container)
+			tag := containerTagCheck(container)
 
 			ctnResults := types.ContainerResults{
-				Name:     container.Name,
-				Requests: req,
-				Limits:   limits,
-				Live:     live,
-				Ready:    ready,
+				Name:      container.Name,
+				Requests:  req,
+				Limits:    limits,
+				Live:      live,
+				Ready:     ready,
+				HostPorts: hostPorts,
+				Tag:       tag.Passed,
 			}
 			deployResults.Containers = append(deployResults.Containers, ctnResults)
 		}
@@ -66,8 +77,71 @@ func probes(container v1.Container) (bool, bool) {
 	return live, ready
 }
 
+// hostPorts checks if any container ports are using HostPort
+func hostPorts(container v1.Container) (bool, string) {
+	violation := false
+	var msg bytes.Buffer
+	for _, port := range container.Ports {
+		if port.HostPort != 0 {
+			msg.WriteString(fmt.Sprintf("Container %s/port %s is using a host port.\n", container.Name, port.Name))
+			violation = true
+		}
+	}
+	return violation, msg.String()
+}
+
 // avoid using "latest" for a tag for image
-func containerTagCheck() {}
+func containerTagCheck(container v1.Container) types.BaseResults {
+	img := strings.Split(container.Image, ":")
+	results := types.BaseResults{
+		Passed: true,
+	}
+
+	if img[1] != "latest" {
+		results.Passed = false
+		results.ErrMsg = fmt.Sprintf("Container %s image tag is %s", container.Image, img[1])
+	}
+	return results
+}
 
 // TODO: add check that cpu limit is not > 1Gb
 func resourceCPULimit() {}
+
+// check best practice labels are defined on a deployment and pods.
+func labels(deployment appsv1.Deployment) types.BaseResults {
+	results := types.BaseResults{
+		Passed: true,
+	}
+	var msg bytes.Buffer
+	var lblExists bool
+
+	collLabels := map[string]map[string]string{"deployment": deployment.GetObjectMeta().GetLabels(), "pod": deployment.Spec.Template.GetLabels()}
+	for _, lbl := range [1]string{"app"} {
+		for lblFrom := range collLabels {
+			_, lblExists = collLabels[lblFrom][lbl]
+			if !lblExists {
+				msg.WriteString(fmt.Sprintf("%s label '%s' does not exist\n", lblFrom, lbl))
+				results.Passed = false
+			}
+		}
+	}
+	results.ErrMsg = msg.String()
+	return results
+}
+
+// check for any pods in deployment spec using hostPort
+func hostPort(deployment appsv1.Deployment) (bool, string) {
+	violation := false
+	var msg bytes.Buffer
+
+	for _, container := range deployment.Spec.Template.Spec.Containers {
+		for _, port := range container.Ports {
+			//TODO: check if HostPort is defined
+			if port.HostPort != 0 {
+				msg.WriteString(fmt.Sprintf("container %s/port %s is using a host port.\n", container.Name, port.Name))
+				violation = true
+			}
+		}
+	}
+	return violation, msg.String()
+}
