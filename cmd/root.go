@@ -27,7 +27,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pratiquetest.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/health-check/health-check.yaml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -42,7 +42,9 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".pratiquetest")
+		viper.SetConfigName("health-check")
+		viper.AddConfigPath("$HOME/.config/health-check")
+		viper.AddConfigPath("$HOME")
 	}
 
 	viper.AutomaticEnv()
